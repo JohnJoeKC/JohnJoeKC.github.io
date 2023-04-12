@@ -8,7 +8,7 @@ const docker = new Docker({ host: 'localhost', port: 2375 });
 app.use(express.static('public')); // Add this line to serve static files from the "public" folder
 app.use(express.static(path.join(__dirname, 'public')));
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  res.sendFile(path.join(__dirname, 'public', 'test.html'));
 });
 app.use(cors({
   origin: 'http://127.0.0.1:5500',
