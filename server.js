@@ -6,6 +6,7 @@ const cors = require('cors');
 const docker = new Docker({ host: 'localhost', port: 2375 });
 
 app.use(express.static('public')); // Add this line to serve static files from the "public" folder
+app.use(express.static(path.join(__dirname, 'public')));
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
@@ -68,4 +69,7 @@ app.get('/', (req, res) => {
 });
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
+});
+app.get('*', (req, res) => {
+  res.status(404).send('Not Found');
 });
