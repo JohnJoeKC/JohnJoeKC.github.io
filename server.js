@@ -5,17 +5,13 @@ const app = express();
 const cors = require('cors');
 const docker = new Docker({ host: 'localhost', port: 2375 });
 
-app.use(express.static('public')); // Add this line to serve static files from the "public" folder
 app.use(express.static(path.join(__dirname, 'public')));
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
 app.use(cors({
   origin: 'http://127.0.0.1:5500',
   methods: ['POST', 'OPTIONS'],
   allowedHeaders: ['Content-Type']
 }));
-app.use(express.json()); // Add this line to parse JSON from incoming requests
+app.use(express.json());
 
 app.post('/execute', async (req, res) => {
     try {
@@ -61,15 +57,17 @@ app.post('/execute', async (req, res) => {
       res.status(500).json({ error: 'Internal server error' });
     }
   
-});
+  });
+
+  const PORT = process.env.PORT || 3000;
   
-const PORT = process.env.PORT || 3000;
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
-app.listen(PORT, () => {
-  console.log(`Server listening on port ${PORT}`);
-});
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  });
+  
+  app.listen(PORT, () => {
+    console.log(`Server listening on port ${PORT}`);
+  });
 app.get('*', (req, res) => {
   res.status(404).send('Not Found');
 });
